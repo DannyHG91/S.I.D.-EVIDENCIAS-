@@ -1,0 +1,263 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#050b12">
+<title>SID | Sistema de Inteligencia Digital</title>
+<style>
+:root{
+ color-scheme:dark;
+ --bg:#050b12;--panel:#0d1925;--panel2:#101f2d;--line:#23384a;
+ --cyan:#00d5f2;--cyan2:#0b91c5;--gold:#d9b45b;--muted:#8fa4b5;
+ --white:#edf6fc;--success:#6de0b1;
+}
+*{box-sizing:border-box}
+html{min-height:100%;background:var(--bg)}
+body{
+ margin:0;min-height:100vh;padding:clamp(14px,4vw,34px);
+ padding-bottom:max(24px,env(safe-area-inset-bottom));
+ color:var(--white);font:15px/1.55 system-ui,-apple-system,Segoe UI,sans-serif;
+ background:
+  radial-gradient(ellipse at 50% -15%,#12344a 0,transparent 48%),
+  linear-gradient(180deg,#07111b 0%,#050b12 75%);
+}
+body:before{
+ content:"";position:fixed;inset:0;pointer-events:none;opacity:.16;
+ background-image:linear-gradient(#25445a 1px,transparent 1px),linear-gradient(90deg,#25445a 1px,transparent 1px);
+ background-size:42px 42px;
+ mask-image:linear-gradient(to bottom,black,transparent 75%);
+}
+main{
+ position:relative;isolation:isolate;width:100%;max-width:690px;margin:clamp(10px,4vh,42px) auto;
+ padding:clamp(20px,5vw,38px);overflow:hidden;
+ background:linear-gradient(145deg,rgba(17,34,49,.97),rgba(9,21,32,.98));
+ border:1px solid #294357;border-radius:22px;
+ box-shadow:0 24px 80px #0009,inset 0 1px #ffffff0b;
+}
+main:before{
+ content:"";position:absolute;top:0;left:8%;right:8%;height:2px;
+ background:linear-gradient(90deg,transparent,var(--cyan),var(--gold),transparent);
+ box-shadow:0 0 22px #00d5f255;
+}
+header{position:relative;padding:5px 0 24px;margin-bottom:25px;border-bottom:1px solid var(--line)}
+.kicker{display:flex;align-items:center;gap:10px;color:var(--cyan);font-size:.72rem;font-weight:850;letter-spacing:.22em;text-transform:uppercase}
+.kicker:before{content:"";width:24px;height:2px;background:var(--gold);box-shadow:0 0 10px #d9b45b88}
+h1{font-size:clamp(1.55rem,5vw,2.1rem);line-height:1.15;letter-spacing:-.035em;margin:13px 0 8px}
+.sub{margin:0;color:#9fb2c1;font-size:.95rem}
+.system-tag{display:inline-flex;align-items:center;gap:8px;margin-top:17px;padding:6px 10px;border:1px solid #2b5369;border-radius:999px;background:#0b2634;color:#9beafa;font-size:.72rem;font-weight:750;letter-spacing:.08em}
+.system-tag:before{content:"";width:7px;height:7px;border-radius:50%;background:var(--success);box-shadow:0 0 10px var(--success)}
+form{display:block}
+label{display:block;margin:19px 0 8px;color:#e7f1f8;font-size:.9rem;font-weight:720;letter-spacing:.01em}
+input:not([type=file]),textarea{
+ display:block;width:100%;padding:14px 15px;border:1px solid #30495e;border-radius:12px;
+ outline:none;background:#07131f;color:var(--white);font:inherit;
+ box-shadow:inset 0 2px 8px #0003;transition:border-color .18s,box-shadow .18s,background .18s;
+}
+input::placeholder,textarea::placeholder{color:#718698}
+input:focus,textarea:focus{border-color:var(--cyan);background:#091a28;box-shadow:0 0 0 3px #00d5f21a}
+textarea{min-height:112px;resize:vertical}
+input[type=file]{
+ display:block;width:100%;min-height:58px;padding:10px;
+ border:1px dashed #3b6379;border-radius:13px;background:#081722;color:#b8c9d5;font:inherit;
+}
+input[type=file]::file-selector-button{
+ margin-right:12px;padding:10px 13px;border:1px solid #28758e;border-radius:9px;
+ background:#12394b;color:#baf5ff;font-weight:750;font:inherit;cursor:pointer;
+}
+small{display:block;margin-top:10px;color:#91a8b8;font-size:.8rem;line-height:1.55}
+button{
+ width:100%;margin-top:22px;padding:16px 18px;border:1px solid #22c7e5;border-radius:13px;
+ background:linear-gradient(105deg,#00cbe9 0%,#078fc9 58%,#1478bd 100%);
+ color:#03131d;font:inherit;font-weight:850;font-size:1rem;letter-spacing:.015em;
+ box-shadow:0 9px 26px #008dbb35,inset 0 1px #ffffff55;cursor:pointer;
+ transition:transform .15s,filter .15s,opacity .15s;
+}
+button:active{transform:translateY(1px) scale(.995);filter:brightness(.95)}
+button:disabled{opacity:.48;cursor:wait;box-shadow:none}
+.progress{height:11px;margin-top:25px;padding:2px;background:#050d15;border:1px solid #2b4052;border-radius:99px;overflow:hidden}
+#bar{height:100%;width:0;border-radius:99px;background:linear-gradient(90deg,var(--cyan),#35d8bb,var(--gold));box-shadow:0 0 14px #00c9ef88;transition:width .25s}
+#status{display:flex;align-items:center;min-height:44px;margin-top:10px;padding:10px 12px;border:1px solid #20394c;border-radius:10px;background:#091722;color:#b9cbd7;font-size:.86rem;white-space:pre-wrap;overflow-wrap:anywhere}
+.result{display:none;margin-top:20px;padding:20px;border:1px solid #26768b;border-radius:16px;background:linear-gradient(145deg,#0c2a36,#0a202b);box-shadow:inset 0 1px #ffffff0a}
+.result strong{display:block;color:#9af0fa;font-size:.78rem;letter-spacing:.14em}
+#code{margin-top:8px;color:#f2f8fc;font-size:1.05rem;font-weight:800;overflow-wrap:anywhere}
+.result a{display:block;width:fit-content;max-width:100%;margin-top:15px;color:#75e6f8;font-weight:750;text-underline-offset:4px;overflow-wrap:anywhere}
+.copy-btn{margin-top:17px;padding:14px;border:1px solid #2c8ca6;border-radius:12px;background:#123c4c;color:#a9f2ff;font-size:.9rem;box-shadow:none}
+.copy-btn:active{background:#185267}
+.note{color:var(--muted);font-size:.82rem;line-height:1.65;margin-top:17px}
+#copyStatus{color:#9ce6d0}
+footer{margin-top:24px;padding-top:16px;border-top:1px solid #203647;color:#6f8798;text-align:center;font-size:.7rem;letter-spacing:.13em}
+@media(max-width:520px){
+ body{padding:12px}
+ main{margin:8px auto;padding:21px 17px;border-radius:18px}
+ header{padding-bottom:20px;margin-bottom:20px}
+ label{margin-top:17px}
+ button{padding:15px}
+ .result{padding:17px}
+}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;transition:none!important}}
+</style>
+</head>
+<body>
+<main>
+<header>
+ <div class="kicker">Sistema de Inteligencia Digital</div>
+ <h1>Transferencia de evidencias</h1>
+ <p class="sub">Plataforma de recepción y resguardo de material audiovisual.</p>
+ <div class="system-tag">CANAL SEGURO · SID OPERATIVO</div>
+</header>
+<form id="form">
+ <label for="applicant">Nombre del solicitante</label>
+ <input id="applicant" maxlength="100" required placeholder="Nombre completo" autocomplete="name">
+ <label for="category">Categoría de la evidencia</label>
+ <input id="category" maxlength="80" required placeholder="Ej. Evidencia operativa">
+ <label for="description">Descripción <span style="color:#8299aa;font-weight:450">(opcional)</span></label>
+ <textarea id="description" maxlength="1000" placeholder="Añade detalles relevantes de la evidencia"></textarea>
+ <label for="file">Archivo de video</label>
+ <input id="file" type="file" accept="video/*" required>
+ <small>Capacidad máxima: 1000 MiB. Transferencia optimizada en fragmentos de 16 MiB, con hasta 3 envíos simultáneos.</small>
+ <button id="submit" type="submit">INICIAR TRANSFERENCIA</button>
+</form>
+<div class="progress" aria-label="Progreso de transferencia"><div id="bar"></div></div>
+<div id="status" role="status" aria-live="polite">Sistema preparado. Esperando selección de archivo.</div>
+<div class="result" id="result">
+ <strong>✓ TRANSFERENCIA COMPLETADA</strong>
+ <div id="code"></div>
+ <a id="view" target="_blank" rel="noopener">Abrir evidencia</a>
+ <button class="copy-btn" id="copyLink" type="button">▣ COPIAR ENLACE PARA COMPARTIR</button>
+ <a id="download" target="_blank" rel="noopener">Descargar archivo</a>
+ <div id="copyStatus" class="note" aria-live="polite"></div>
+ <input id="shareUrl" type="text" readonly hidden aria-label="Enlace de evidencia">
+</div>
+<p class="note">Mantén esta página abierta durante la transferencia. Los enlaces de visualización y descarga caducan automáticamente según la retención configurada en el sistema (24 horas).</p>
+<footer>SID · SISTEMA DE INTELIGENCIA DIGITAL</footer>
+</main>
+<script>
+"use strict";
+const API="https://sid-api.dhuanca870.workers.dev";
+const MAX_BYTES=1000*1024*1024;
+const form=document.getElementById("form"),submit=document.getElementById("submit"),statusBox=document.getElementById("status"),bar=document.getElementById("bar"),resultBox=document.getElementById("result");
+let shareLink="";
+document.getElementById("copyLink").addEventListener("click",async()=>{
+ const msg=document.getElementById("copyStatus");
+ const field=document.getElementById("shareUrl");
+ if(!shareLink){
+  msg.textContent="Todavía no hay un enlace generado. Completa primero la transferencia.";
+  return;
+ }
+ field.value=shareLink;
+ try{
+  if(navigator.clipboard && window.isSecureContext){
+   await navigator.clipboard.writeText(shareLink);
+   msg.textContent="✓ Enlace copiado. Ya puedes pegarlo en Discord o WhatsApp.";
+   return;
+  }
+ }catch(e){}
+ try{
+  const t=document.createElement("textarea");
+  t.value=shareLink;
+  t.setAttribute("readonly","");
+  t.style.position="fixed";
+  t.style.left="-9999px";
+  t.style.top="0";
+  document.body.appendChild(t);
+  t.focus();t.select();t.setSelectionRange(0,t.value.length);
+  const copied=document.execCommand("copy");
+  t.remove();
+  if(copied){
+   msg.textContent="✓ Enlace copiado. Ya puedes pegarlo en Discord o WhatsApp.";
+   return;
+  }
+ }catch(e){}
+ if(navigator.share){
+  try{
+   await navigator.share({title:"Evidencia SID",text:"Enlace de evidencia:",url:shareLink});
+   msg.textContent="Se abrió el menú para compartir la evidencia.";
+   return;
+  }catch(e){
+   if(e && e.name==="AbortError"){
+    msg.textContent="Compartir cancelado. El enlace está disponible abajo para copiarlo manualmente.";
+   }
+  }
+ }
+ field.hidden=false;
+ field.focus();field.select();field.setSelectionRange(0,field.value.length);
+ msg.textContent="El navegador bloqueó la copia automática. El enlace quedó seleccionado: mantén pulsado y elige Copiar.";
+});
+function status(s){statusBox.textContent=s}
+async function readJson(r){const t=await r.text();let d;try{d=JSON.parse(t)}catch{throw new Error("Respuesta no válida: "+t.slice(0,200))}if(!r.ok)throw new Error(d.error||"Error HTTP "+r.status);return d}
+form.addEventListener("submit",async e=>{
+ e.preventDefault();resultBox.style.display="none";bar.style.width="0%";
+ const file=document.getElementById("file").files[0],applicant=document.getElementById("applicant").value.trim(),category=document.getElementById("category").value.trim(),description=document.getElementById("description").value.trim();
+ if(!file){status("Selecciona un video.");return}
+ if(!file.type.startsWith("video/")){status("El archivo debe ser un video.");return}
+ if(file.size<1||file.size>MAX_BYTES){status("El video debe pesar entre 1 byte y 1000 MiB.");return}
+ submit.disabled=true;
+ try{
+  status("1/3 · Iniciando carga...");
+  const init=await readJson(await fetch(API+"/api/uploads/init",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({nombre_solicitante:applicant,categoria:category,descripcion:description,nombre_archivo:file.name,mime_type:file.type,tamano_bytes:file.size})}));
+  const parts=new Array(init.total_parts);
+  const concurrency=3;
+  const maxRetries=3;
+  let nextPart=1;
+  let uploadedBytes=0;
+  let fatalError=null;
+
+  async function sendPart(n){
+   const start=(n-1)*init.part_size;
+   const end=Math.min(start+init.part_size,file.size);
+   const chunk=file.slice(start,end);
+
+   for(let attempt=1;attempt<=maxRetries;attempt++){
+    try{
+     status(`2/3 · Enviando ${n}/${init.total_parts} · ${Math.round(uploadedBytes/file.size*100)}% · Intento ${attempt}/${maxRetries}`);
+     const response=await fetch(API+"/api/uploads/part",{
+      method:"PUT",
+      headers:{
+       "X-Upload-Id":init.upload_id,
+       "X-Upload-Secret":init.upload_secret,
+       "X-Part-Number":String(n),
+       "Content-Type":"application/octet-stream"
+      },
+      body:chunk
+     });
+     const part=await readJson(response);
+     parts[n-1]={partNumber:part.part_number,etag:part.etag};
+     uploadedBytes+=chunk.size;
+     bar.style.width=(uploadedBytes/file.size*85)+"%";
+     status(`2/3 · ${Math.min(uploadedBytes,file.size).toLocaleString("es")} de ${file.size.toLocaleString("es")} bytes enviados · ${n}/${init.total_parts} partes completadas`);
+     return;
+    }catch(err){
+     if(attempt===maxRetries)throw new Error(`Falló la parte ${n} después de ${maxRetries} intentos: ${err.message}`);
+     await new Promise(resolve=>setTimeout(resolve,700*Math.pow(2,attempt-1)));
+    }
+   }
+  }
+
+  async function worker(){
+   while(!fatalError){
+    const n=nextPart++;
+    if(n>init.total_parts)return;
+    try{
+     await sendPart(n);
+    }catch(err){
+     fatalError=err;
+     return;
+    }
+   }
+  }
+
+  await Promise.all(
+   Array.from({length:Math.min(concurrency,init.total_parts)},()=>worker())
+  );
+  if(fatalError)throw fatalError;
+  status("3/3 · Confirmando archivo y registrando evidencia...");
+  const done=await readJson(await fetch(API+"/api/uploads/complete",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({upload_id:init.upload_id,upload_secret:init.upload_secret,parts})}));
+  bar.style.width="100%";status("Carga finalizada correctamente.");
+  document.getElementById("code").textContent="Código: "+done.codigo;shareLink=done.enlace;document.getElementById("view").href=shareLink;document.getElementById("download").href=done.descarga;document.getElementById("copyStatus").textContent="Comparte el enlace de visualización con quien deba revisar la evidencia.";resultBox.style.display="block";form.reset();
+ }catch(err){status("ERROR: "+(err.message||String(err))+"\nSi se interrumpió, revisa D1 antes de volver a intentarlo.")}
+ finally{submit.disabled=false}
+});
+</script>
+</body>
+</html>
